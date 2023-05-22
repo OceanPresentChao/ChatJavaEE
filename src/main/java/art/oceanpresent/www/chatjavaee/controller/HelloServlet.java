@@ -1,4 +1,4 @@
-package art.oceanpresent.www.chatjavaee;
+package art.oceanpresent.www.chatjavaee.controller;
 
 import java.io.*;
 import javax.servlet.http.*;

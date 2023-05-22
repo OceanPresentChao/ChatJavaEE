@@ -3,7 +3,21 @@
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
              xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd"
              version="2.2">
-    <persistence-unit name="default">
-
+    <persistence-unit name="default" transaction-type="RESOURCE_LOCAL">
+        <class>art.oceanpresent.www.chatjavaee.entity.Chat</class>
+        <class>art.oceanpresent.www.chatjavaee.entity.Comment</class>
+        <class>art.oceanpresent.www.chatjavaee.entity.Message</class>
+        <class>art.oceanpresent.www.chatjavaee.entity.User</class>
+        <properties>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect"/>
+            <property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/javaee"/>
+            <property name="hibernate.connection.driver_class" value="com.mysql.cj.jdbc.Driver"/>
+            <property name="hibernate.connection.username" value="root"/>
+            <property name="hibernate.connection.password" value="123456"/>
+            <!-- 输出SQL语句 -->
+            <property name="hibernate.show_sql" value="true" />
+            <!-- 格式化SQL语句 -->
+            <property name="hibernate.format_sql" value="true" />
+        </properties>
     </persistence-unit>
 </persistence>
