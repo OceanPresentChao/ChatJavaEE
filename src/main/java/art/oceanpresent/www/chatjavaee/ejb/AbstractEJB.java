@@ -1,7 +1,6 @@
 package art.oceanpresent.www.chatjavaee.ejb;
 
 
-
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -25,7 +24,7 @@ public abstract class AbstractEJB<ID, T extends AbstractEntity<ID>> {
     }
 
     public List<T> findAll() {
-        EntityManager em =this.entityManager();
+        EntityManager em = this.entityManager();
         CriteriaBuilder cb = em.getCriteriaBuilder();
 
         CriteriaQuery<T> q = cb.createQuery(entityClass());
@@ -35,7 +34,7 @@ public abstract class AbstractEJB<ID, T extends AbstractEntity<ID>> {
     }
 
     public T create(T entity) {
-        EntityManager em =this.entityManager();
+        EntityManager em = this.entityManager();
         EntityTransaction transaction = em.getTransaction();
         transaction.begin();
         em.persist(entity);
@@ -45,10 +44,7 @@ public abstract class AbstractEJB<ID, T extends AbstractEntity<ID>> {
     }
 
     public T update(T entity) {
-        if(entity.getId() == null || this.findById(entity.getId()) == null) {
-            return null;
-        }
-        EntityManager em =this.entityManager();
+        EntityManager em = this.entityManager();
         EntityTransaction transaction = em.getTransaction();
         transaction.begin();
         em.merge(entity);
@@ -62,7 +58,7 @@ public abstract class AbstractEJB<ID, T extends AbstractEntity<ID>> {
     }
 
     public void delete(T entity) {
-        EntityManager em =this.entityManager();
+        EntityManager em = this.entityManager();
         EntityTransaction transaction = em.getTransaction();
         T el = this.findById(entity.getId());
         entityManager().remove(el);

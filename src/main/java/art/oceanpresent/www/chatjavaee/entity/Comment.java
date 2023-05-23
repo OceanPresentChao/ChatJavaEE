@@ -24,13 +24,13 @@ public class Comment {
     @Column(name = "createTime")
     private LocalDateTime createTime;
 
-    @ManyToOne(cascade={CascadeType.MERGE,CascadeType.REFRESH})//可选属性optional=false,表示author不能为空。删除文章，不影响用户
-    @JoinColumn(name="user_id")//设置在article表中的关联字段(外键)
-    private User user;
-
-    @ManyToOne(cascade={CascadeType.MERGE,CascadeType.REFRESH})//可选属性optional=false,表示author不能为空。删除文章，不影响用户
-    @JoinColumn(name="chat_id")
-    private Chat chat;
+//    @ManyToOne(cascade={CascadeType.MERGE,CascadeType.REFRESH})//可选属性optional=false,表示author不能为空。删除文章，不影响用户
+//    @JoinColumn(name="user_id")//设置在article表中的关联字段(外键)
+//    private User user;
+//
+//    @ManyToOne(cascade={CascadeType.MERGE,CascadeType.REFRESH})//可选属性optional=false,表示author不能为空。删除文章，不影响用户
+//    @JoinColumn(name="chat_id")
+//    private Chat chat;
 
     public Object getId() {
         return id;
@@ -72,21 +72,21 @@ public class Comment {
         this.createTime = createTime;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Chat getChat() {
-        return chat;
-    }
-
-    public void setChat(Chat chat) {
-        this.chat = chat;
-    }
+//    public User getUser() {
+//        return user;
+//    }
+//
+//    public void setUser(User user) {
+//        this.user = user;
+//    }
+//
+//    public Chat getChat() {
+//        return chat;
+//    }
+//
+//    public void setChat(Chat chat) {
+//        this.chat = chat;
+//    }
 
     @Override
     public String toString() {

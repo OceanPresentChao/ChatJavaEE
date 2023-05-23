@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户注册</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            height: 100%;
+        }
+
+        body {
+            height: 100%;
+        }
+
+        .container {
+            height: 100%;
+            background-image: linear-gradient(to right, #fbc2eb, #a6c1ee);
+        }
+
+        .login-wrapper {
+            background-color: #fff;
+            width: 358px;
+            height: 588px;
+            border-radius: 15px;
+            padding: 0 50px;
+            position: relative;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .header {
+            font-size: 38px;
+            font-weight: bold;
+            text-align: center;
+            line-height: 200px;
+        }
+
+        .input-item {
+            display: block;
+            width: 100%;
+            margin-bottom: 20px;
+            border: 0;
+            padding: 10px;
+            border-bottom: 1px solid rgb(128, 125, 125);
+            font-size: 15px;
+            outline: none;
+        }
+
+        .input-item:placeholder {
+            text-transform: uppercase;
+        }
+
+        .btn {
+            text-align: center;
+            padding: 10px;
+            width: 100%;
+            margin-top: 40px;
+            background-image: linear-gradient(to right, #a6c1ee, #fbc2eb);
+            color: #fff;
+        }
+
+        .msg {
+            text-align: center;
+            line-height: 88px;
+        }
+
+        a {
+            text-decoration-line: none;
+            color: #abc1ee;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="login-wrapper">
+        <div class="header">Register</div>
+        <div class="form-wrapper">
+            <input type="text" name="username" placeholder="username" class="input-item">
+            <input id="password" type="password" name="password" placeholder="password" class="input-item">
+            <div id="passAlert" style="display: none;color: #ef3838;">密码必须是8位以上的字母和数字组合</div>
+            <div id="register" class="btn">Register</div>
+        </div>
+        <div class="msg">
+            Already have account?
+            <a href="./index.html">Login in</a>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<script>
+    let psPattern = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,}$/;
+    $("#password").blur(function () {
+        let password = $(this).val();
+        if (!psPattern.test(password)) {
+            $("#passAlert").show();
+        }
+    });
+    $("#register").on("click", function () {
+        let username = $("input[name='username']").val();
+        let password = $("input[name='password']").val();
+        if (!psPattern.test(password)) {
+            $("#passAlert").show();
+            return;
+        }
+        $.ajax({
+            url: "RegisterServlet",
+            type: "post",
+            data: {
+                username: username,
+                password: password
+            },
+            success: function (data) {
+                if (data.code === 200) {
+                    alert("注册成功");
+                    window.location.href = "./index.html";
+                } else {
+                    alert("注册失败");
+                }
+            }
+        })
+    })
+</script>
+</body>
+</html>

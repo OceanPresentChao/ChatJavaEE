@@ -22,12 +22,12 @@ public class Chat {
     @Column(name = "createTime")
     private LocalDateTime createTime;
 
-    @ManyToOne(cascade={CascadeType.MERGE,CascadeType.REFRESH})//可选属性optional=false,表示author不能为空。删除文章，不影响用户
-    @JoinColumn(name="user_id")//设置在article表中的关联字段(外键)
-    private User user;//所属作者
-
-    @OneToMany(mappedBy = "chat",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
-    private List<Comment> commentList;//文章列表
+//    @ManyToOne(cascade={CascadeType.MERGE,CascadeType.REFRESH})//可选属性optional=false,表示author不能为空。删除文章，不影响用户
+//    @JoinColumn(name="user_id")//设置在article表中的关联字段(外键)
+//    private User user;//所属作者
+//
+//    @OneToMany(mappedBy = "chat",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
+//    private List<Comment> commentList;//文章列表
 
     public Integer getId() {
         return id;
@@ -61,21 +61,21 @@ public class Chat {
         this.createTime = createTime;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public List<Comment> getCommentList() {
-        return commentList;
-    }
-
-    public void setCommentList(List<Comment> commentList) {
-        this.commentList = commentList;
-    }
+//    public User getUser() {
+//        return user;
+//    }
+//
+//    public void setUser(User user) {
+//        this.user = user;
+//    }
+//
+//    public List<Comment> getCommentList() {
+//        return commentList;
+//    }
+//
+//    public void setCommentList(List<Comment> commentList) {
+//        this.commentList = commentList;
+//    }
 
     @Override
     public String toString() {

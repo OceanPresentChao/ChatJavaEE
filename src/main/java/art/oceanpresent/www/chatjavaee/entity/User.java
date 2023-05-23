@@ -18,14 +18,14 @@ public class User implements AbstractEntity<Integer> {
     private String password;
     private LocalDateTime createTime;
 
-    @OneToMany(mappedBy = "user",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
-    //级联保存、更新、删除、刷新;延迟加载。当删除用户，会级联删除该用户的所有文章
-    //拥有mappedBy注解的实体类为关系被维护端
-    //mappedBy="author"中的author是Article中的author属性
-    private List<Chat> articleList;//文章列表
-
-    @OneToMany(mappedBy = "user",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
-    private List<Comment> commentList;//文章列表
+//    @OneToMany(mappedBy = "user",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
+//    //级联保存、更新、删除、刷新;延迟加载。当删除用户，会级联删除该用户的所有文章
+//    //拥有mappedBy注解的实体类为关系被维护端
+//    //mappedBy="author"中的author是Article中的author属性
+//    private List<Chat> articleList;//文章列表
+//
+//    @OneToMany(mappedBy = "user",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
+//    private List<Comment> commentList;//文章列表
 
     public Integer getId() {
         return id;
@@ -59,21 +59,21 @@ public class User implements AbstractEntity<Integer> {
         this.createTime = createTime;
     }
 
-    public List<Chat> getArticleList() {
-        return articleList;
-    }
-
-    public void setArticleList(List<Chat> articleList) {
-        this.articleList = articleList;
-    }
-
-    public List<Comment> getCommentList() {
-        return commentList;
-    }
-
-    public void setCommentList(List<Comment> commentList) {
-        this.commentList = commentList;
-    }
+//    public List<Chat> getArticleList() {
+//        return articleList;
+//    }
+//
+//    public void setArticleList(List<Chat> articleList) {
+//        this.articleList = articleList;
+//    }
+//
+//    public List<Comment> getCommentList() {
+//        return commentList;
+//    }
+//
+//    public void setCommentList(List<Comment> commentList) {
+//        this.commentList = commentList;
+//    }
 
     @Override
     public String toString() {

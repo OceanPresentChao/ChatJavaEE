@@ -17,7 +17,7 @@ public class UserEJB extends AbstractEJB<Integer, User> {
     @PersistenceContext(unitName = "default")
     private EntityManager entityManager;
 
-    public List<User> findByKeyword(String keyword) {
+    public List<User> findByUsername(String keyword) {
         return stream().filter(p -> p.getUsername().contains(keyword))
                 .collect(toList());
     }
