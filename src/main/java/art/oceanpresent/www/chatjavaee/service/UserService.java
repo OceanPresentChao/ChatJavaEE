@@ -11,7 +11,6 @@ public class UserService {
 
     public static User register(String name, String password){
         User user = new User();
-        user.setId(1);
         user.setUsername(name);
         user.setPassword(password);
         User res = userEjb.create(user);

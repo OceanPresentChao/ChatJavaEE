@@ -2,6 +2,7 @@ package art.oceanpresent.www.chatjavaee.entity;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "message", schema = "javaee")
@@ -19,12 +20,25 @@ public class Message {
     @Basic
     @Column(name = "chat_id")
     private Integer chatId;
+
     @Basic
     @Column(name = "content")
     private String content;
     @Basic
     @Column(name = "createTime")
-    private Timestamp createTime;
+    private LocalDateTime createTime;
+
+    @ManyToOne(cascade={CascadeType.MERGE,CascadeType.REFRESH})//可选属性optional=false,表示author不能为空。删除文章，不影响用户
+    @JoinColumn(name="chat_id")//设置在article表中的关联字段(外键)
+    private Chat chat;
+
+    @ManyToOne(cascade={CascadeType.MERGE,CascadeType.REFRESH})//可选属性optional=false,表示author不能为空。删除文章，不影响用户
+    @JoinColumn(name="user_to_id")//设置在article表中的关联字段(外键)
+    private User userTo;
+
+    @ManyToOne(cascade={CascadeType.MERGE,CascadeType.REFRESH})//可选属性optional=false,表示author不能为空。删除文章，不影响用户
+    @JoinColumn(name="user_from_id")//设置在article表中的关联字段(外键)
+    private User userFrom;
 
     public Integer getId() {
         return id;
@@ -66,12 +80,36 @@ public class Message {
         this.content = content;
     }
 
-    public Timestamp getCreateTime() {
+    public LocalDateTime getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Timestamp createTime) {
+    public void setCreateTime(LocalDateTime createTime) {
         this.createTime = createTime;
+    }
+
+    public Chat getChat() {
+        return chat;
+    }
+
+    public void setChat(Chat chat) {
+        this.chat = chat;
+    }
+
+    public User getUserTo() {
+        return userTo;
+    }
+
+    public void setUserTo(User userTo) {
+        this.userTo = userTo;
+    }
+
+    public User getUserFrom() {
+        return userFrom;
+    }
+
+    public void setUserFrom(User userFrom) {
+        this.userFrom = userFrom;
     }
 
     @Override
@@ -100,5 +138,22 @@ public class Message {
         result = 31 * result + (content != null ? content.hashCode() : 0);
         result = 31 * result + (createTime != null ? createTime.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Message{" +
+                "id=" + id +
+                ", userFromId=" + userFromId +
+                ", userToId=" + userToId +
+                ", chatId=" + chatId +
+                ", content='" + content + '\'' +
+                ", createTime=" + createTime +
+                '}';
+    }
+
+    @PrePersist
+    protected void onCreate() {
+        createTime = LocalDateTime.now();
     }
 }

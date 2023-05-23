@@ -2,6 +2,7 @@ package art.oceanpresent.www.chatjavaee.entity;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "comment", schema = "javaee")
@@ -21,7 +22,15 @@ public class Comment {
     private String content;
     @Basic
     @Column(name = "createTime")
-    private Timestamp createTime;
+    private LocalDateTime createTime;
+
+    @ManyToOne(cascade={CascadeType.MERGE,CascadeType.REFRESH})//可选属性optional=false,表示author不能为空。删除文章，不影响用户
+    @JoinColumn(name="user_id")//设置在article表中的关联字段(外键)
+    private User user;
+
+    @ManyToOne(cascade={CascadeType.MERGE,CascadeType.REFRESH})//可选属性optional=false,表示author不能为空。删除文章，不影响用户
+    @JoinColumn(name="chat_id")
+    private Chat chat;
 
     public Object getId() {
         return id;
@@ -55,12 +64,39 @@ public class Comment {
         this.content = content;
     }
 
-    public Timestamp getCreateTime() {
+    public LocalDateTime getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Timestamp createTime) {
+    public void setCreateTime(LocalDateTime createTime) {
         this.createTime = createTime;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Chat getChat() {
+        return chat;
+    }
+
+    public void setChat(Chat chat) {
+        this.chat = chat;
+    }
+
+    @Override
+    public String toString() {
+        return "Comment{" +
+                "id=" + id +
+                ", userId=" + userId +
+                ", chatId=" + chatId +
+                ", content='" + content + '\'' +
+                ", createTime=" + createTime +
+                '}';
     }
 
     @Override
@@ -87,5 +123,10 @@ public class Comment {
         result = 31 * result + (content != null ? content.hashCode() : 0);
         result = 31 * result + (createTime != null ? createTime.hashCode() : 0);
         return result;
+    }
+
+    @PrePersist
+    protected void onCreate() {
+        createTime = LocalDateTime.now();
     }
 }

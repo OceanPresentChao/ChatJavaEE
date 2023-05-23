@@ -11,18 +11,19 @@ import art.oceanpresent.www.chatjavaee.service.UserService;
 public class RegisterServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setCharacterEncoding("UTF-8");
         doPost(request,response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setCharacterEncoding("UTF-8");
         String name = request.getParameter("username");
         String password = request.getParameter("password");
-//        try{
-            response.getWriter().write(UserService.register("name", "password").toString());
-//        }catch (Exception e){
-//            response.getWriter().write(e.getMessage());
-//        }
-
+        try{
+            response.getWriter().write(UserService.register(name, password).toString());
+        }catch (Exception e){
+            response.getWriter().write(e.getMessage());
+        }
     }
 }

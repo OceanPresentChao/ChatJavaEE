@@ -3,6 +3,7 @@ package art.oceanpresent.www.chatjavaee.ejb;
 
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
@@ -24,17 +25,22 @@ public abstract class AbstractEJB<ID, T extends AbstractEntity<ID>> {
     }
 
     public List<T> findAll() {
-
-        CriteriaBuilder cb = this.entityManager().getCriteriaBuilder();
+        EntityManager em =this.entityManager();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
 
         CriteriaQuery<T> q = cb.createQuery(entityClass());
         Root<T> c = q.from(entityClass());
 
-        return entityManager().createQuery(q).getResultList();
+        return em.createQuery(q).getResultList();
     }
 
     public T create(T entity) {
-        this.entityManager().persist(entity);
+        EntityManager em =this.entityManager();
+        EntityTransaction transaction = em.getTransaction();
+        transaction.begin();
+        em.persist(entity);
+        transaction.commit();
+        em.close();
         return entity;
     }
 
@@ -42,7 +48,13 @@ public abstract class AbstractEJB<ID, T extends AbstractEntity<ID>> {
         if(entity.getId() == null || this.findById(entity.getId()) == null) {
             return null;
         }
-        return this.entityManager().merge(entity);
+        EntityManager em =this.entityManager();
+        EntityTransaction transaction = em.getTransaction();
+        transaction.begin();
+        em.merge(entity);
+        transaction.commit();
+        em.close();
+        return entity;
     }
 
     public T findById(ID id) {
@@ -50,8 +62,12 @@ public abstract class AbstractEJB<ID, T extends AbstractEntity<ID>> {
     }
 
     public void delete(T entity) {
-        T _entity = entityManager().merge(entity);
-        entityManager().remove(_entity);
+        EntityManager em =this.entityManager();
+        EntityTransaction transaction = em.getTransaction();
+        T el = this.findById(entity.getId());
+        entityManager().remove(el);
+        transaction.commit();
+        em.close();
     }
 
     public Stream<T> stream() {
