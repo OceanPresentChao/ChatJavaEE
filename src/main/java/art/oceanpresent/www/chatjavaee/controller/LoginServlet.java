@@ -1,5 +1,6 @@
 package art.oceanpresent.www.chatjavaee.controller;
 
+import art.oceanpresent.www.chatjavaee.entity.User;
 import art.oceanpresent.www.chatjavaee.service.UserService;
 import art.oceanpresent.www.chatjavaee.util.CustomException;
 import art.oceanpresent.www.chatjavaee.util.CustomResponse;
@@ -26,7 +27,8 @@ public class LoginServlet extends HttpServlet {
         ServletOutputStream out = response.getOutputStream();
         JsonObject res = new JsonObject();
         try {
-            UserService.login(name, password);
+            User u = UserService.login(name, password);
+            res.add("user", CustomResponse.convert2Object(u));
             out.print(CustomResponse.success(res).toString());
         } catch (CustomException e) {
             out.print(CustomResponse.error(e.getMessage()).toString());
