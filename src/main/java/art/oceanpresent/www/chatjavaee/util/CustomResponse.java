@@ -8,9 +8,11 @@ import java.time.format.DateTimeFormatter;
 
 public class CustomResponse {
 
-    private static Gson getCustomGson() {
+    public static Gson getCustomGson() {
         return new GsonBuilder()
                 .setPrettyPrinting()
+                .excludeFieldsWithoutExposeAnnotation()
+                .setLenient()
                 .registerTypeAdapter(LocalDateTime.class, new JsonSerializer<LocalDateTime>() {
                     @Override
                     public JsonElement serialize(LocalDateTime localDateTime, Type type, JsonSerializationContext jsonSerializationContext) {

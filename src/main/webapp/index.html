@@ -77,17 +77,42 @@
 <div id="login_box">
     <h2>LOGIN</h2>
     <div id="input_box">
-        <input type="text" placeholder="请输入用户名">
+        <input type="text" placeholder="请输入用户名" name="username">
     </div>
     <div class="input_box">
-        <input type="password" placeholder="请输入密码">
+        <input type="password" placeholder="请输入密码" name="password">
     </div>
     <div>
         <a href="./register.html">Register</a>
-        <button>Login</button>
+        <button id="login_btn">Login</button>
     </div>
     <br>
 </div>
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<script>
+    $("#login_btn").on("click", function () {
+        let username = $("input[name='username']").val();
+        let password = $("input[name='password']").val();
+        $.ajax({
+            url: "login",
+            type: "post",
+            data: {
+                username: username,
+                password: password
+            },
+            success: function (data) {
+                data = JSON.parse(data)
+                if (data.code == 200) {
+                    alert(data.message);
+                    sessionStorage.setItem("JAVAEE_USER", JSON.stringify(data.data.user))
+                    window.location.href = "./home.html"
+                } else {
+                    alert(data.message);
+                }
+            }
+        })
+    })
+</script>
 </body>
 
 </html>

@@ -1,19 +1,22 @@
 package art.oceanpresent.www.chatjavaee.controller;
 
-import javax.servlet.*;
-import javax.servlet.http.*;
-import javax.servlet.annotation.*;
-import java.io.IOException;
-
+import art.oceanpresent.www.chatjavaee.entity.Chat;
 import art.oceanpresent.www.chatjavaee.entity.User;
-import art.oceanpresent.www.chatjavaee.service.UserService;
+import art.oceanpresent.www.chatjavaee.service.ChatService;
 import art.oceanpresent.www.chatjavaee.util.CustomException;
 import art.oceanpresent.www.chatjavaee.util.CustomResponse;
-import art.oceanpresent.www.chatjavaee.util.Tool;
 import com.google.gson.JsonObject;
 
-@WebServlet(name = "UserServlet", value = "/user")
-public class UserServlet extends HttpServlet {
+import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
+@WebServlet(name = "ChatServlet", value = "/chat")
+public class ChatServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setCharacterEncoding("UTF-8");
@@ -21,10 +24,9 @@ public class UserServlet extends HttpServlet {
         ServletOutputStream out = response.getOutputStream();
         JsonObject res = new JsonObject();
         try {
-            User user = UserService.getUser(id);
-            res.add("user", CustomResponse.convert2Object(user));
+            Chat chat = ChatService.getChat(id);
+            res.add("chat", CustomResponse.convert2Object(chat));
             out.print(CustomResponse.success(res).toString());
-
         } catch (CustomException e) {
             out.print(CustomResponse.error(res, e.getMessage()).toString());
         }
@@ -33,7 +35,6 @@ public class UserServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setCharacterEncoding("UTF-8");
-        request.setCharacterEncoding("UTF-8");
         String method = request.getParameter("method");
         if (method != null && method.equals("put")) {
             this.doPut(request, response);
@@ -43,47 +44,47 @@ public class UserServlet extends HttpServlet {
             this.doDelete(request, response);
             return;
         }
-        String name = request.getParameter("username");
-        String password = request.getParameter("password");
-        
+        Integer userid = Integer.parseInt(request.getParameter("user_id"));
+        String title = request.getParameter("title");
         ServletOutputStream out = response.getOutputStream();
         JsonObject res = new JsonObject();
         try {
-            User user = UserService.register(name, password);
-            res.add("user", CustomResponse.convert2Object(user));
+            Chat el = new Chat();
+            el.setTitle(title);
+            Chat chat = ChatService.createChat(userid, el);
+            res.add("chat", CustomResponse.convert2Object(chat));
             out.print(CustomResponse.success(res).toString());
         } catch (CustomException e) {
             out.print(CustomResponse.error(res, e.getMessage()).toString());
         }
     }
 
+    @Override
     protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setCharacterEncoding("UTF-8");
-        request.setCharacterEncoding("UTF-8");
         Integer id = Integer.parseInt(request.getParameter("id"));
-        String password = request.getParameter("password");
+        String title = request.getParameter("title");
         ServletOutputStream out = response.getOutputStream();
         JsonObject res = new JsonObject();
         try {
-            User data = UserService.getUser(id);
-            if (password != null) {
-                data.setPassword(Tool.getMD5(password));
-            }
-            User user = UserService.updateUser(id, data);
-            res.add("user", CustomResponse.convert2Object(user));
+            Chat data = ChatService.getChat(id);
+            data.setTitle(title);
+            Chat chat = ChatService.updateChat(id, data);
+            res.add("chat", CustomResponse.convert2Object(chat));
             out.print(CustomResponse.success(res).toString());
         } catch (CustomException e) {
             out.print(CustomResponse.error(res, e.getMessage()).toString());
         }
     }
 
+    @Override
     protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setCharacterEncoding("UTF-8");
         Integer id = Integer.parseInt(request.getParameter("id"));
         ServletOutputStream out = response.getOutputStream();
         JsonObject res = new JsonObject();
         try {
-            UserService.deleteUser(id);
+            ChatService.deleteChat(id);
             out.print(CustomResponse.success(res).toString());
         } catch (CustomException e) {
             out.print(CustomResponse.error(res, e.getMessage()).toString());

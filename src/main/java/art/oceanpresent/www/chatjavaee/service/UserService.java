@@ -9,7 +9,6 @@ import java.util.List;
 
 public class UserService {
     static UserEJB userEjb = new UserEJB();
-    static int passwordLen = 25;
 
     public static User login(String name, String password) {
         List<User> userList = userEjb.findByUsername(name);
@@ -17,20 +16,23 @@ public class UserService {
             throw new CustomException("User not found");
         }
         User theone = userList.get(0);
-        if (!theone.getPassword().equals(Tool.getMD5(password).substring(0, passwordLen))) {
+        if (!theone.getPassword().equals(Tool.getMD5(password))) {
             throw new CustomException("Wrong password");
         }
         return theone;
     }
 
     public static User register(String name, String password) {
+        if (name == null || password == null) {
+            throw new CustomException("Username or password cannot be empty");
+        }
         List<User> userList = userEjb.findByUsername(name);
         if (!userList.isEmpty()) {
             throw new CustomException("User already exists");
         }
         User user = new User();
         user.setUsername(name);
-        user.setPassword(Tool.getMD5(password).substring(0, passwordLen));
+        user.setPassword(Tool.getMD5(password));
         User res = userEjb.create(user);
         return res;
     }

@@ -8,7 +8,7 @@
     <title>Chat</title>
     <!-- CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
-        crossorigin="anonymous">
+          crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
 
     <style>
@@ -68,7 +68,6 @@
             border-color: rgba(7, 125, 21, 0.843);
             background-color: rgba(12, 180, 121, 0.871);
         }
-
 
 
         .chat-list {
@@ -184,88 +183,160 @@
 </head>
 
 <body>
-    <div style="display: flex;height: 100vh;">
-        <div class="sidebar">
-            <div style="border-bottom: 1px solid rgba(21, 123, 240, 0.861);margin-bottom: .5rem;">
-                <div class="new-chat">
-                    <span>+</span>
-                    <span>&nbsp;New Chat <i class="bi bi-chat-dots"></i></span>
-                </div>
+<div style="display: flex;height: 100vh;">
+    <div class="sidebar">
+        <div style="border-bottom: 1px solid rgba(21, 123, 240, 0.861);margin-bottom: .5rem;">
+            <div class="new-chat" data-toggle="modal" data-target="#chatModel">
+                <span>+</span>
+                <span>&nbsp;New Chat <i class="bi bi-chat-dots"></i></span>
             </div>
-            <div class="chat-list">
-                <div class="chat-card">1</div>
-                <div class="chat-card">1</div>
-                <div class="chat-card">1</div>
-                <div class="chat-card">1</div>
-                <div class="chat-card">1</div>
-                <div class="chat-card">1</div>
-                <div class="chat-card">1</div>
-                <div class="chat-card">1</div>
-                <div class="chat-card">1</div>
-                <div class="chat-card">1</div>
-                <div class="chat-card">1</div>
-                <div class="chat-card">1</div>
-                <div class="chat-card">1</div>
-            </div>
-            <div class="setting-wrapper">
-                <div class="btn-group dropup setting">
-                    <div class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                        <i class="bi bi-file-earmark-person"></i><span>About Me</span>
+        </div>
+        <!-- Modal -->
+        <div class="modal fade" id="chatModel" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">New Chat</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" href="./person.html">Setting</a>
-                        <span class="dropdown-item" href="#">Quit</span>
+                    <div class="modal-body">
+                        <div class="input-group flex-nowrap">
+                                <span class="input-group-text" id="addon-wrapping"><i
+                                        class="bi bi-chat-left-text"></i></span>
+                            <input name="chat-title" type="text" class="form-control" placeholder="Chat Title"
+                                   aria-label="Username" aria-describedby="addon-wrapping">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button id="new-chat" type="button" class="btn btn-primary">Create</button>
                     </div>
                 </div>
             </div>
         </div>
-        <main class="chat-area">
-            <div class="message-area">
-                <div class="chat-message right">
-                    <div class="media">
-                        <div class="avatar">
-                            <i class="bi bi-robot"></i>
-                        </div>
-                        <div class="media-body">
-                            <h5 class="mt-0">Media heading</h5>
-                            <p>Will you do the same for me? It's time to face the music I'm no longer your muse. Heard
-                                it's beautiful, be the judge and my girls gonna take a vote. I can feel a phoenix inside
-                                of me. Heaven is jealous of our love, angels are crying from up above. Yeah, you take me
-                                to utopia.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="chat-message">
-                    <div class="media">
-                        <div class="avatar">
-                            <i class="bi bi-robot"></i>
-                        </div>
-                        <div class="media-body">
-                            <h5 class="mt-0">Media heading</h5>
-                            <p>Will you do the same for me? It's time to face the music I'm no longer your muse. Heard
-                                it's beautiful, be the judge and my girls gonna take a vote. I can feel a phoenix inside
-                                of me. Heaven is jealous of our love, angels are crying from up above. Yeah, you take me
-                                to utopia.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="operation-bar">
-                <div class="stop-wrapper">
-                    <button type="button" class="btn btn-danger">Stop</button>
-                </div>
-                <div class="chat-input-wrapper">
-                    <input class="chat-input" type="text" placeholder="please input">
-                    <i class="bi bi-send"></i>
-                </div>
 
+        <div class="chat-list">
+            <div class="chat-card">1</div>
+        </div>
+        <div class="setting-wrapper">
+            <div class="btn-group dropup setting">
+                <div class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-file-earmark-person"></i><span>About Me</span>
+                </div>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="./person.html">Setting</a>
+                    <span class="dropdown-item" href="#">Quit</span>
+                </div>
             </div>
-        </main>
+        </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"
+    <main class="chat-area">
+        <div class="message-area">
+            <div class="chat-message right">
+                <div class="media">
+                    <div class="avatar">
+                        <i class="bi bi-robot"></i>
+                    </div>
+                    <div class="media-body">
+                        <h5 class="mt-0">Media heading</h5>
+                        <p>Will you do the same for me? It's time to face the music I'm no longer your muse. Heard
+                            it's beautiful, be the judge and my girls gonna take a vote. I can feel a phoenix inside
+                            of me. Heaven is jealous of our love, angels are crying from up above. Yeah, you take me
+                            to utopia.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="chat-message">
+                <div class="media">
+                    <div class="avatar">
+                        <i class="bi bi-robot"></i>
+                    </div>
+                    <div class="media-body">
+                        <h5 class="mt-0">Media heading</h5>
+                        <p>Will you do the same for me? It's time to face the music I'm no longer your muse. Heard
+                            it's beautiful, be the judge and my girls gonna take a vote. I can feel a phoenix inside
+                            of me. Heaven is jealous of our love, angels are crying from up above. Yeah, you take me
+                            to utopia.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="operation-bar">
+            <div class="stop-wrapper">
+                <button type="button" class="btn btn-danger">Stop</button>
+            </div>
+            <div class="chat-input-wrapper">
+                <input class="chat-input" type="text" placeholder="please input">
+                <i class="bi bi-send"></i>
+            </div>
+
+        </div>
+    </main>
+</div>
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"
         crossorigin="anonymous"></script>
+<script>
+    let user = sessionStorage.getItem("JAVAEE_USER")
+    if (!user) {
+        alert("Please login first!")
+        window.location.href = "./index.html"
+    }
+    user = JSON.parse(user)
+    let chatList = []
+
+    renderChatList()
+
+
+    $("#new-chat").on("click", function () {
+        let chatTitle = $("input[name='chat-title']").val()
+        if (chatTitle.trim().length === 0) {
+            alert("Please input chat title!")
+            return
+        }
+        $.ajax({
+            url: "chat",
+            type: "POST",
+            data: {
+                "user_id": user.id,
+                "title": chatTitle
+            },
+            success: function (data) {
+                data = JSON.parse(data)
+                alert(data.message)
+            }
+        })
+    })
+
+    function renderChatList() {
+        $.ajax({
+            url: "chat/list",
+            type: "get",
+            data: {
+                "user_id": user.id
+            },
+            success: function (data) {
+                data = JSON.parse(data)
+                if (data.code === 200) {
+                    chatList = data.data.list || []
+                    console.log(chatList)
+                    $(".chat-list").empty()
+                    for (const el of chatList) {
+                        const cardBox = $('<div class="chat-card"></div>').text(el.title)
+                        $(".chat-list").append(cardBox)
+                    }
+                } else {
+                    console.error(data.message)
+                }
+            }
+        })
+
+
+    }
+</script>
 </body>
 
 </html>

@@ -110,18 +110,19 @@
             return;
         }
         $.ajax({
-            url: "UserServlet",
+            url: "user",
             type: "post",
             data: {
                 username: username,
                 password: password
             },
             success: function (data) {
+                data = JSON.parse(data)
                 if (data.code === 200) {
                     alert("注册成功");
                     window.location.href = "./index.html";
                 } else {
-                    alert("注册失败");
+                    alert(data.message);
                 }
             }
         })

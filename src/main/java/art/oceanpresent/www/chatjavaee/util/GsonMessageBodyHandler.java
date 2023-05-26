@@ -38,6 +38,7 @@ public class GsonMessageBodyHandler implements MessageBodyWriter<Object>,
             final GsonBuilder gsonBuilder = new GsonBuilder();
             gson = gsonBuilder
                     .setPrettyPrinting()
+                    .excludeFieldsWithoutExposeAnnotation()
                     .registerTypeAdapter(LocalDateTime.class, new JsonSerializer<LocalDateTime>() {
                         @Override
                         public JsonElement serialize(LocalDateTime localDateTime, Type type, JsonSerializationContext jsonSerializationContext) {
