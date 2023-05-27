@@ -11,6 +11,7 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 @WebServlet(name = "PasswordServlet", value = "/password")
 public class PasswordServlet extends HttpServlet {
@@ -25,7 +26,7 @@ public class PasswordServlet extends HttpServlet {
         String name = request.getParameter("username");
         String phone = request.getParameter("phone");
         String password = request.getParameter("password");
-        ServletOutputStream out = response.getOutputStream();
+        PrintWriter out = response.getWriter();
         JsonObject res = new JsonObject();
         try {
             if (name == null || phone == null || password == null) {

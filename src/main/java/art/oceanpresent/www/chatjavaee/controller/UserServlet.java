@@ -4,6 +4,7 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 import art.oceanpresent.www.chatjavaee.entity.User;
 import art.oceanpresent.www.chatjavaee.service.UserService;
@@ -18,7 +19,7 @@ public class UserServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setCharacterEncoding("UTF-8");
         Integer id = Integer.parseInt(request.getParameter("id"));
-        ServletOutputStream out = response.getOutputStream();
+        PrintWriter out = response.getWriter();
         JsonObject res = new JsonObject();
         try {
             User user = UserService.getUser(id);
@@ -46,7 +47,7 @@ public class UserServlet extends HttpServlet {
         String name = request.getParameter("username");
         String password = request.getParameter("password");
 
-        ServletOutputStream out = response.getOutputStream();
+        PrintWriter out = response.getWriter();
         JsonObject res = new JsonObject();
         try {
             User user = UserService.register(name, password);
@@ -65,7 +66,7 @@ public class UserServlet extends HttpServlet {
         String email = request.getParameter("email");
         String phone = request.getParameter("phone");
         String address = request.getParameter("address");
-        ServletOutputStream out = response.getOutputStream();
+        PrintWriter out = response.getWriter();
         JsonObject res = new JsonObject();
         try {
             User data = UserService.getUser(id);
@@ -92,7 +93,7 @@ public class UserServlet extends HttpServlet {
     protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setCharacterEncoding("UTF-8");
         Integer id = Integer.parseInt(request.getParameter("id"));
-        ServletOutputStream out = response.getOutputStream();
+        PrintWriter out = response.getWriter();
         JsonObject res = new JsonObject();
         try {
             UserService.deleteUser(id);

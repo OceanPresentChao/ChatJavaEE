@@ -268,8 +268,8 @@
                 <button type="button" class="btn btn-danger">Stop</button>
             </div>
             <div class="chat-input-wrapper">
-                <input class="chat-input" type="text" placeholder="please input">
-                <i class="bi bi-send"></i>
+                <input class="chat-input" type="text" placeholder="please input" name="message">
+                <i class="bi bi-send" id="send-btn"></i>
             </div>
 
         </div>
@@ -280,61 +280,160 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"
         crossorigin="anonymous"></script>
 <script>
-    let user = sessionStorage.getItem("JAVAEE_USER")
-    if (!user) {
+    let userStr = sessionStorage.getItem("JAVAEE_USER")
+    if (!userStr) {
         alert("Please login first!")
         window.location.href = "./index.html"
     }
-    user = JSON.parse(user)
-    let chatList = []
+    let appContext = {
+        chatList: [],
+        user: JSON.parse(userStr),
+        activeChat: null,
+        activeMessageList: []
+    }
 
-    renderChatList()
+    window.onload = function () {
+        renderChatList()
+        $("#new-chat").on("click", function () {
+            let chatTitle = $("input[name='chat-title']").val()
+            if (chatTitle.trim().length === 0) {
+                alert("Please input chat title!")
+                return
+            }
+            $.ajax({
+                url: "chat",
+                type: "POST",
+                data: {
+                    "user_id": appContext.user.id,
+                    "title": chatTitle
+                },
+                success: function (data) {
+                    data = JSON.parse(data)
+                    alert(data.message)
+                    renderChatList()
+                }
+            })
+        })
+
+        $("#send-btn").on('click', function () {
+            onSendMessage()
+        })
+
+        $("input[name='message']").on('keypress', function (ev) {
+            if (ev.keyCode === 13) {
+                onSendMessage()
+            }
+        })
+    }
 
 
-    $("#new-chat").on("click", function () {
-        let chatTitle = $("input[name='chat-title']").val()
-        if (chatTitle.trim().length === 0) {
-            alert("Please input chat title!")
+    function onSelectChat() {
+        let chatId = Number($(this).attr("number"))
+        appContext.activeChat = appContext.chatList.find(el => el.id === chatId)
+        console.log(appContext.activeChat)
+        renderMessageList(chatId)
+    }
+
+    function onSendMessage() {
+        const msg = $("input[name='message']").val()
+        if (!appContext.activeChat) {
+            alert("Please select chat first!")
+            return
+        }
+        if (msg.trim().length === 0) {
+            alert("Please input message!")
             return
         }
         $.ajax({
-            url: "chat",
-            type: "POST",
+            url: 'message',
+            type: 'POST',
             data: {
-                "user_id": user.id,
-                "title": chatTitle
+                "chat_id": appContext.activeChat.id,
+                "content": msg
             },
             success: function (data) {
                 data = JSON.parse(data)
-                alert(data.message)
+                if (data.code === 200) {
+                    renderMessageList(appContext.activeChat.id)
+                    $("input[name='message']").val("")
+                } else {
+                    console.error(data.message)
+                }
             }
         })
-    })
+    }
 
     function renderChatList() {
         $.ajax({
             url: "chat/list",
             type: "get",
             data: {
-                "user_id": user.id
+                "user_id": appContext.user.id
             },
             success: function (data) {
                 data = JSON.parse(data)
                 if (data.code === 200) {
-                    chatList = data.data.list || []
-                    console.log(chatList)
-                    $(".chat-list").empty()
-                    for (const el of chatList) {
-                        const cardBox = $('<div class="chat-card"></div>').text(el.title)
+                    appContext.chatList = data.data.list || []
+                    console.log(appContext)
+                    $(".chat-list").empty().hide()
+                    for (const el of appContext.chatList) {
+                        const cardBox = $(`<div class="chat-card" number="${el.id}"></div>`).text(el.title).on('click', onSelectChat)
                         $(".chat-list").append(cardBox)
                     }
+                    $(".chat-list").fadeIn()
                 } else {
                     console.error(data.message)
                 }
             }
         })
+    }
 
+    function renderMessageList(chatId) {
+        $.ajax({
+            url: "message/list",
+            type: "get",
+            data: {
+                "chat_id": chatId
+            },
+            success: function (data) {
+                data = JSON.parse(data)
+                if (data.code === 200) {
+                    appContext.activeMessageList = data.data.list || []
+                    console.log(appContext)
+                    $(".message-area").empty().hide()
+                    for (const el of appContext.activeMessageList) {
+                        const dir = el.userFromId === appContext.user.id ? "right" : "left"
+                        const person = el.userFromId === appContext.user.id ? "You" : "JAVAEE_ROBOT"
+                        const message = el.content
+                        const time = el.createTime
+                        const cardBox = $(createMessageBox(person, message, time, dir))
+                        $(".message-area").append(cardBox)
+                    }
+                    $(".message-area").fadeIn()
+                } else {
+                    console.error(data.message)
+                }
+            }
+        })
+    }
 
+    function createMessageBox(person, message, time, dir) {
+        const heading = person
+        const icon = (person.toLowerCase() !== 'javaee_robot' ? 'bi-emoji-smile' : 'bi-robot')
+        const body = message
+        const footer = time
+        return `<div class="chat-message ${dir}">
+                <div class="media">
+                    <div class="avatar">
+                        <i class="bi ${icon}"></i>
+                    </div>
+                    <div class="media-body">
+                        <h5 class="mt-0">${heading}</h5>
+                        <p>${body}</p>
+                        <p>${footer}</p>
+                    </div>
+                </div>
+            </div>`
     }
 </script>
 </body>

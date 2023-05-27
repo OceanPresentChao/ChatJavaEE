@@ -1,11 +1,11 @@
 package art.oceanpresent.www.chatjavaee.controller;
 
-import art.oceanpresent.www.chatjavaee.entity.Chat;
-import art.oceanpresent.www.chatjavaee.service.ChatService;
+import art.oceanpresent.www.chatjavaee.entity.Message;
 import art.oceanpresent.www.chatjavaee.util.CustomException;
 import art.oceanpresent.www.chatjavaee.util.CustomResponse;
 import com.google.gson.JsonObject;
 
+import javax.ejb.EJB;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
@@ -13,16 +13,19 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
-@WebServlet(name = "ChatListServlet", value = "/chat/list")
-public class ChatListServlet extends HttpServlet {
+@WebServlet(name = "MessageListServlet", value = "/message/list")
+public class MessageListServlet extends HttpServlet {
+    @EJB
+    private art.oceanpresent.www.chatjavaee.ejb.MessageBean messageBean;
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setCharacterEncoding("UTF-8");
-        Integer userid = Integer.parseInt(request.getParameter("user_id"));
+        Integer chatId = Integer.parseInt(request.getParameter("chat_id"));
         PrintWriter out = response.getWriter();
         JsonObject res = new JsonObject();
         try {
-            List<Chat> list = ChatService.getChatList(userid);
+            List<Message> list = messageBean.getMessageByChat(chatId);
             res.add("list", CustomResponse.convert2Array(list));
             out.print(CustomResponse.success(res).toString());
         } catch (CustomException e) {

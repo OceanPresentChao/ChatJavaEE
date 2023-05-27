@@ -10,6 +10,7 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 @WebServlet(name = "LoginServlet", value = "/login")
 public class LoginServlet extends HttpServlet {
@@ -24,7 +25,7 @@ public class LoginServlet extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         String name = request.getParameter("username");
         String password = request.getParameter("password");
-        ServletOutputStream out = response.getOutputStream();
+        PrintWriter out = response.getWriter();
         JsonObject res = new JsonObject();
         try {
             User u = UserService.login(name, password);

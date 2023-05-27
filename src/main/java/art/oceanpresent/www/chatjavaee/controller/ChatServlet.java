@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 @WebServlet(name = "ChatServlet", value = "/chat")
 public class ChatServlet extends HttpServlet {
@@ -21,7 +22,7 @@ public class ChatServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setCharacterEncoding("UTF-8");
         Integer id = Integer.parseInt(request.getParameter("id"));
-        ServletOutputStream out = response.getOutputStream();
+        PrintWriter out = response.getWriter();
         JsonObject res = new JsonObject();
         try {
             Chat chat = ChatService.getChat(id);
