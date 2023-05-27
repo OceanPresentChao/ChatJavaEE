@@ -1,6 +1,6 @@
 package art.oceanpresent.www.chatjavaee.service;
 
-import art.oceanpresent.www.chatjavaee.ejb.UserEJB;
+import art.oceanpresent.www.chatjavaee.jpa.UserJPA;
 import art.oceanpresent.www.chatjavaee.entity.User;
 import art.oceanpresent.www.chatjavaee.util.CustomException;
 import art.oceanpresent.www.chatjavaee.util.Tool;
@@ -8,10 +8,10 @@ import art.oceanpresent.www.chatjavaee.util.Tool;
 import java.util.List;
 
 public class UserService {
-    static UserEJB userEjb = new UserEJB();
+    static UserJPA userJPA = new UserJPA();
 
     public static User login(String name, String password) {
-        List<User> userList = userEjb.findByUsername(name);
+        List<User> userList = userJPA.findByUsername(name);
         if (userList.isEmpty()) {
             throw new CustomException("User not found");
         }
@@ -26,31 +26,31 @@ public class UserService {
         if (name == null || password == null) {
             throw new CustomException("Username or password cannot be empty");
         }
-        List<User> userList = userEjb.findByUsername(name);
+        List<User> userList = userJPA.findByUsername(name);
         if (!userList.isEmpty()) {
             throw new CustomException("User already exists");
         }
         User user = new User();
         user.setUsername(name);
         user.setPassword(Tool.getMD5(password));
-        User res = userEjb.create(user);
+        User res = userJPA.create(user);
         return res;
     }
 
     public static User updateUser(Integer id, User user) {
         User u = getUser(id);
         user.setId(u.getId());
-        return userEjb.update(user);
+        return userJPA.update(user);
     }
 
     public static User updateUser(String username, User user) {
         User u = getUser(username);
         user.setId(u.getId());
-        return userEjb.update(user);
+        return userJPA.update(user);
     }
 
     public static User getUser(Integer id) {
-        User u = userEjb.findById(id);
+        User u = userJPA.findById(id);
         if (u == null) {
             throw new CustomException("User not found");
         }
@@ -58,7 +58,7 @@ public class UserService {
     }
 
     public static User getUser(String name) {
-        List<User> userList = userEjb.findByUsername(name);
+        List<User> userList = userJPA.findByUsername(name);
         if (userList.isEmpty()) {
             throw new CustomException("User not found");
         }
@@ -67,12 +67,12 @@ public class UserService {
 
     public static void deleteUser(Integer id) {
         User u = getUser(id);
-        userEjb.delete(u);
+        userJPA.delete(u);
     }
 
     public static void deleteUser(String username) {
         User u = getUser(username);
-        userEjb.delete(u);
+        userJPA.delete(u);
     }
 
 }

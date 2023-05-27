@@ -27,6 +27,9 @@ public class Chat implements AbstractEntity<Integer> {
     @JoinColumn(name = "user_id")//设置在article表中的关联字段(外键)
     private User user;//所属作者
 
+    @OneToMany(mappedBy = "chat", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Message> messagesList;
+
 //    @OneToMany(mappedBy = "chat",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
 //    private List<Comment> commentList;//文章列表
 
@@ -70,6 +73,14 @@ public class Chat implements AbstractEntity<Integer> {
 //    public void setCommentList(List<Comment> commentList) {
 //        this.commentList = commentList;
 //    }
+
+    public List<Message> getMessagesList() {
+        return messagesList;
+    }
+
+    public void setMessagesList(List<Message> messagesList) {
+        this.messagesList = messagesList;
+    }
 
     @Override
     public String toString() {

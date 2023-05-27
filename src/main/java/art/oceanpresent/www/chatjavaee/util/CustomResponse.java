@@ -33,6 +33,13 @@ public class CustomResponse {
         return gson.toJsonTree(data).getAsJsonArray();
     }
 
+    public static JsonObject parseAsObject(String str) {
+        return getCustomGson().fromJson(str, JsonObject.class);
+    }
+
+    public static JsonArray parseAsArray(String str) {
+        return getCustomGson().fromJson(str, JsonArray.class);
+    }
 
     public static JsonObject response(Object data, String message, int code) {
         Gson gson = getCustomGson();

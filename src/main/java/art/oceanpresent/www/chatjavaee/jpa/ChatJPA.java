@@ -1,7 +1,6 @@
-package art.oceanpresent.www.chatjavaee.ejb;
+package art.oceanpresent.www.chatjavaee.jpa;
 
 import art.oceanpresent.www.chatjavaee.entity.Chat;
-import art.oceanpresent.www.chatjavaee.entity.User;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -14,7 +13,7 @@ import java.util.List;
 import static java.util.stream.Collectors.toList;
 
 @Stateless
-public class ChatEJB extends AbstractEJB<Integer, Chat> {
+public class ChatJPA extends AbstractJPA<Integer, Chat> {
     @PersistenceContext(unitName = "default")
     private EntityManager entityManager;
 

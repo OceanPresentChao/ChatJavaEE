@@ -27,7 +27,7 @@ public class User implements AbstractEntity<Integer> {
     //拥有mappedBy注解的实体类为关系被维护端
     //mappedBy="author"中的author是Article中的author属性
     private List<Chat> chatList;//文章列表
-//
+
 //    @OneToMany(mappedBy = "user",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
 //    private List<Comment> commentList;//文章列表
 

@@ -1,4 +1,4 @@
-package art.oceanpresent.www.chatjavaee.ejb;
+package art.oceanpresent.www.chatjavaee.jpa;
 
 
 import javax.persistence.EntityManager;
@@ -14,7 +14,7 @@ import java.util.stream.Stream;
 import art.oceanpresent.www.chatjavaee.entity.AbstractEntity;
 
 
-public abstract class AbstractEJB<ID, T extends AbstractEntity<ID>> {
+public abstract class AbstractJPA<ID, T extends AbstractEntity<ID>> {
 
     protected abstract EntityManager entityManager();
 
