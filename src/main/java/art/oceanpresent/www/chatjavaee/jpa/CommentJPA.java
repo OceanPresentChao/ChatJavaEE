@@ -26,6 +26,11 @@ public class CommentJPA extends AbstractJPA<Integer, Comment> {
                 .collect(toList());
     }
 
+    public List<Comment> findByChat(Integer chatId) {
+        return stream().filter(p -> p.getChat().getId() == chatId)
+                .collect(toList());
+    }
+
     @Override
     protected EntityManager entityManager() {
         EntityManagerFactory emf = Persistence

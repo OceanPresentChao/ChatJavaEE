@@ -66,13 +66,7 @@ public class UserService {
     }
 
     public static void deleteUser(Integer id) {
-        User u = getUser(id);
-        userJPA.delete(u);
-    }
-
-    public static void deleteUser(String username) {
-        User u = getUser(username);
-        userJPA.delete(u);
+        userJPA.delete(id);
     }
 
 }

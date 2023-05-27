@@ -19,6 +19,9 @@ public class Chat implements AbstractEntity<Integer> {
     @Expose
     private String title;
 
+    @Expose
+    private String status;
+
     @Column(name = "createTime")
     @Expose
     private LocalDateTime createTime;
@@ -30,8 +33,8 @@ public class Chat implements AbstractEntity<Integer> {
     @OneToMany(mappedBy = "chatId", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Message> messagesList;
 
-//    @OneToMany(mappedBy = "chat",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
-//    private List<Comment> commentList;//文章列表
+    @OneToMany(mappedBy = "chat", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Comment> commentList;//文章列表
 
     public Integer getId() {
         return id;
@@ -49,6 +52,13 @@ public class Chat implements AbstractEntity<Integer> {
         this.title = title;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     public LocalDateTime getCreateTime() {
         return createTime;
@@ -65,14 +75,15 @@ public class Chat implements AbstractEntity<Integer> {
     public void setUser(User user) {
         this.user = user;
     }
-//
-//    public List<Comment> getCommentList() {
-//        return commentList;
-//    }
-//
-//    public void setCommentList(List<Comment> commentList) {
-//        this.commentList = commentList;
-//    }
+
+    //
+    public List<Comment> getCommentList() {
+        return commentList;
+    }
+
+    public void setCommentList(List<Comment> commentList) {
+        this.commentList = commentList;
+    }
 
     public List<Message> getMessagesList() {
         return messagesList;
@@ -96,5 +107,6 @@ public class Chat implements AbstractEntity<Integer> {
     @PrePersist
     protected void onCreate() {
         createTime = LocalDateTime.now();
+        status = "running";
     }
 }

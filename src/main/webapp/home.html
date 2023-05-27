@@ -75,13 +75,18 @@
         }
 
         .chat-card {
-            --data-height: 4rem;
-            --data-padding: 10px;
-            height: var(--data-height);
-            padding: var(--data-padding);
-            line-height: calc(var(--data-height) - var(--data-padding) * 2);
             text-align: center;
             margin: 0 .5rem;
+            padding: .5rem 0;
+            display: flex;
+        }
+
+        .chat-card span {
+            margin: auto;
+        }
+
+        .chat-card button {
+            margin-left: auto;
         }
 
         .chat-card:hover {
@@ -179,6 +184,20 @@
         .right .avatar {
             order: 1;
         }
+
+        .comment-wrapper {
+            margin: 0.5rem 0;
+        }
+
+        #comment-area {
+            max-height: 20rem;
+            overflow-y: scroll;
+            margin: 1rem 0;
+        }
+
+        .comment-card {
+            margin: 0.3rem 0;
+        }
     </style>
 </head>
 
@@ -234,42 +253,28 @@
     </div>
     <main class="chat-area">
         <div class="message-area">
-            <div class="chat-message right">
-                <div class="media">
-                    <div class="avatar">
-                        <i class="bi bi-robot"></i>
-                    </div>
-                    <div class="media-body">
-                        <h5 class="mt-0">Media heading</h5>
-                        <p>Will you do the same for me? It's time to face the music I'm no longer your muse. Heard
-                            it's beautiful, be the judge and my girls gonna take a vote. I can feel a phoenix inside
-                            of me. Heaven is jealous of our love, angels are crying from up above. Yeah, you take me
-                            to utopia.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="chat-message">
-                <div class="media">
-                    <div class="avatar">
-                        <i class="bi bi-robot"></i>
-                    </div>
-                    <div class="media-body">
-                        <h5 class="mt-0">Media heading</h5>
-                        <p>Will you do the same for me? It's time to face the music I'm no longer your muse. Heard
-                            it's beautiful, be the judge and my girls gonna take a vote. I can feel a phoenix inside
-                            of me. Heaven is jealous of our love, angels are crying from up above. Yeah, you take me
-                            to utopia.</p>
-                    </div>
-                </div>
-            </div>
         </div>
         <div class="operation-bar">
             <div class="stop-wrapper">
-                <button type="button" class="btn btn-danger">Stop</button>
+                <button type="button" class="btn btn-danger" id="stop-btn">Stop</button>
             </div>
             <div class="chat-input-wrapper">
                 <input class="chat-input" type="text" placeholder="please input" name="message">
                 <i class="bi bi-send" id="send-btn"></i>
+            </div>
+            <div class="comment-wrapper">
+                <div>
+                    <button class="btn btn-info" type="button" id="collapse-btn">
+                        <span>Comments</span> <span class="badge badge-light" id="comment-badge">xx</span>
+                    </button>
+                    <input type="text" placeholder="please input" name="comment">
+                    <button type="button" class="btn btn-success" id="comment-btn">
+                        Comment
+                    </button>
+                </div>
+                <div class="collapse" id="comment-area">
+
+                </div>
             </div>
 
         </div>
@@ -295,24 +300,7 @@
     window.onload = function () {
         renderChatList()
         $("#new-chat").on("click", function () {
-            let chatTitle = $("input[name='chat-title']").val()
-            if (chatTitle.trim().length === 0) {
-                alert("Please input chat title!")
-                return
-            }
-            $.ajax({
-                url: "chat",
-                type: "POST",
-                data: {
-                    "user_id": appContext.user.id,
-                    "title": chatTitle
-                },
-                success: function (data) {
-                    data = JSON.parse(data)
-                    alert(data.message)
-                    renderChatList()
-                }
-            })
+            onNewChat()
         })
 
         $("#send-btn").on('click', function () {
@@ -324,14 +312,95 @@
                 onSendMessage()
             }
         })
+
+        $("#stop-btn").on('click', function () {
+            onStopChat()
+        })
+
+        $("#collapse-btn").on('click', function () {
+            $("#comment-area").fadeToggle()
+        })
+
+        $("#comment-btn").on('click', function () {
+            onComment()
+        })
     }
 
+    function onDeleteChat() {
+        const chatId = Number($(this).attr("number"))
+        $.ajax({
+            url: "chat",
+            type: "POST",
+            data: {
+                "id": chatId,
+                "method": 'delete'
+            },
+            success: function (data) {
+                alert(data.message)
+                location.reload()
+            }
+        })
+    }
+
+    function onNewChat() {
+        const chatTitle = $("input[name='chat-title']").val()
+        if (chatTitle.trim().length === 0) {
+            alert("Please input chat title!")
+            return
+        }
+        $.ajax({
+            url: "chat",
+            type: "POST",
+            data: {
+                "user_id": appContext.user.id,
+                "title": chatTitle
+            },
+            success: function (data) {
+                data = JSON.parse(data)
+                alert(data.message)
+                renderChatList()
+            }
+        })
+    }
 
     function onSelectChat() {
         let chatId = Number($(this).attr("number"))
         appContext.activeChat = appContext.chatList.find(el => el.id === chatId)
         console.log(appContext.activeChat)
+        resetFormStatus()
         renderMessageList(chatId)
+        renderCommentList(chatId)
+        adaptFormStatus()
+    }
+
+    function onComment() {
+        const comment = $("input[name='comment']").val()
+        if (!appContext.activeChat) {
+            alert("Please select chat first!")
+            return
+        }
+        if (comment.trim().length === 0) {
+            alert("Please input comment!")
+            return
+        }
+        $.ajax({
+            url: 'comment',
+            type: 'POST',
+            data: {
+                "chat_id": appContext.activeChat.id,
+                "user_id": appContext.user.id,
+                "content": comment
+            },
+            success: function (data) {
+                data = JSON.parse(data)
+                if (data.code === 200) {
+                    renderCommentList(appContext.activeChat.id)
+                    $("input[name='comment']").val("")
+                } else {
+                    console.error(data.message)
+                }
+            }
+        })
     }
 
     function onSendMessage() {
@@ -363,6 +432,73 @@
         })
     }
 
+    function onStopChat() {
+        if (!appContext.activeChat) {
+            alert("Please select chat first!")
+            return
+        }
+        $.ajax({
+            url: 'chat',
+            type: 'POST',
+            data: {
+                "method": 'put',
+                "id": appContext.activeChat.id,
+                "status": 'finished'
+            },
+            success: function (data) {
+                data = JSON.parse(data)
+                if (data.code === 200) {
+                    alert(data.message)
+                    location.reload()
+                } else {
+                    console.error(data.message)
+                }
+            }
+        })
+    }
+
+    function adaptFormStatus() {
+        if (!appContext.activeChat) {
+            return
+        }
+        if (appContext.activeChat.status === 'finished') {
+            $(".stop-wrapper").hide()
+            $(".chat-input-wrapper").hide()
+            $(".comment-wrapper").show()
+        }
+    }
+
+    function resetFormStatus() {
+        $(".stop-wrapper").show()
+        $(".chat-input-wrapper").show()
+        $(".comment-wrapper").hide()
+    }
+
+    function renderCommentList(chatId) {
+        $.ajax({
+            url: "comment/list",
+            type: "get",
+            data: {
+                "chat_id": chatId
+            },
+            success: function (data) {
+                data = JSON.parse(data)
+                if (data.code === 200) {
+                    appContext.activeChat.commentList = data.data.list || []
+                    $("#comment-badge").text(appContext.activeChat.commentList.length)
+                    $("#comment-area").empty()
+                    for (const el of appContext.activeChat.commentList) {
+                        const cardBox = $(createCommentBox(appContext.user.username, el.content, el.createTime))
+                        $("#comment-area").append(cardBox)
+                    }
+                    $("#comment-area").hide()
+                } else {
+                    console.error(data.message)
+                }
+            }
+        })
+    }
+
     function renderChatList() {
         $.ajax({
             url: "chat/list",
@@ -377,7 +513,9 @@
                     console.log(appContext)
                     $(".chat-list").empty().hide()
                     for (const el of appContext.chatList) {
-                        const cardBox = $(`<div class="chat-card" number="${el.id}"></div>`).text(el.title).on('click', onSelectChat)
+                        const deleteBtn = $(`<button class="btn btn-danger btn-sm" number="${el.id}">Delete</button>`).on('click', onDeleteChat)
+                        const textP = $('<span></span>').text(el.title)
+                        const cardBox = $(`<div class="chat-card" number="${el.id}"></div>`).on('click', onSelectChat).append(textP).append(deleteBtn)
                         $(".chat-list").append(cardBox)
                     }
                     $(".chat-list").fadeIn()
@@ -415,6 +553,15 @@
                 }
             }
         })
+    }
+
+    function createCommentBox(person, message, time) {
+        return `
+        <div className="comment-card">
+            <p>用户:${person}</p>
+            <p>${message}</p>
+            <p>评论时间:${time}</p>
+        </div>`
     }
 
     function createMessageBox(person, message, time, dir) {

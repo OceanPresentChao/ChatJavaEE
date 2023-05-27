@@ -12,6 +12,7 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 @WebServlet(name = "CommentServlet", value = "/comment")
 public class CommentServlet extends HttpServlet {
@@ -28,7 +29,7 @@ public class CommentServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setCharacterEncoding("UTF-8");
         Integer id = Integer.parseInt(request.getParameter("id"));
-        ServletOutputStream out = response.getOutputStream();
+        PrintWriter out = response.getWriter();
         JsonObject res = new JsonObject();
         try {
             Comment cmt = CommentService.getComment(id);
@@ -52,7 +53,7 @@ public class CommentServlet extends HttpServlet {
             return;
         }
         JsonObject res = new JsonObject();
-        ServletOutputStream out = response.getOutputStream();
+        PrintWriter out = response.getWriter();
         Integer userid = Integer.parseInt(request.getParameter("user_id"));
         Integer chatid = Integer.parseInt(request.getParameter("chat_id"));
         String content = request.getParameter("content");
@@ -97,7 +98,7 @@ public class CommentServlet extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         Integer id = Integer.parseInt(request.getParameter("id"));
         String content = request.getParameter("content");
-        ServletOutputStream out = response.getOutputStream();
+        PrintWriter out = response.getWriter();
         JsonObject res = new JsonObject();
         try {
             Comment data = CommentService.getComment(id);
@@ -113,7 +114,7 @@ public class CommentServlet extends HttpServlet {
     protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setCharacterEncoding("UTF-8");
         Integer id = Integer.parseInt(request.getParameter("id"));
-        ServletOutputStream out = response.getOutputStream();
+        PrintWriter out = response.getWriter();
         JsonObject res = new JsonObject();
         try {
             CommentService.deleteComment(id);

@@ -35,11 +35,15 @@ public class CommentService {
     }
 
     public static void deleteComment(Integer id) {
-        Comment u = getComment(id);
-        commentJPA.delete(u);
+        commentJPA.delete(id);
     }
 
-    public static List<Comment> getCommentList(Integer userId) {
+    public static List<Comment> getCommentListByUser(Integer userId) {
         return commentJPA.findByUser(userId);
     }
+
+    public static List<Comment> getCommentListByChat(Integer chatId) {
+        return commentJPA.findByChat(chatId);
+    }
+
 }

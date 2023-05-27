@@ -57,11 +57,11 @@ public abstract class AbstractJPA<ID, T extends AbstractEntity<ID>> {
         return entityManager().find(entityClass(), id);
     }
 
-    public void delete(T entity) {
+    public void delete(ID id) {
         EntityManager em = this.entityManager();
         EntityTransaction transaction = em.getTransaction();
-        T el = this.findById(entity.getId());
-        entityManager().remove(el);
+        transaction.begin();
+        em.remove(em.find(entityClass(), id));
         transaction.commit();
         em.close();
     }

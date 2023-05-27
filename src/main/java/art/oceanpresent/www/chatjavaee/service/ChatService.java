@@ -32,8 +32,7 @@ public class ChatService {
 
 
     public static void deleteChat(Integer id) {
-        Chat u = getChat(id);
-        chatJPA.delete(u);
+        chatJPA.delete(id);
     }
 
     public static List<Chat> getChatList(Integer userId) {

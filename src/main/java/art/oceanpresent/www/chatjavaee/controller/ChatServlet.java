@@ -65,11 +65,18 @@ public class ChatServlet extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         Integer id = Integer.parseInt(request.getParameter("id"));
         String title = request.getParameter("title");
+        String status = request.getParameter("status");
         ServletOutputStream out = response.getOutputStream();
         JsonObject res = new JsonObject();
         try {
             Chat data = ChatService.getChat(id);
-            data.setTitle(title);
+            if (title != null) {
+
+                data.setTitle(title);
+            }
+            if (status != null) {
+                data.setStatus(status);
+            }
             Chat chat = ChatService.updateChat(id, data);
             res.add("chat", CustomResponse.convert2Object(chat));
             out.print(CustomResponse.success(res).toString());
