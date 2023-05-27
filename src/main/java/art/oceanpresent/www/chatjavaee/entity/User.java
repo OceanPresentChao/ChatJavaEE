@@ -20,6 +20,13 @@ public class User implements AbstractEntity<Integer> {
     private String username;
     private String password;
     @Expose
+    private String phone;
+    @Expose
+    private String email;
+    @Expose
+    private String address;
+
+    @Expose
     private LocalDateTime createTime;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -53,6 +60,30 @@ public class User implements AbstractEntity<Integer> {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public LocalDateTime getCreateTime() {

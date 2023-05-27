@@ -3,7 +3,6 @@ package art.oceanpresent.www.chatjavaee.entity;
 import com.google.gson.annotations.Expose;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Entity
@@ -24,20 +23,17 @@ public class Message implements AbstractEntity<Integer> {
     @Expose
     private LocalDateTime createTime;
 
-    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH})//可选属性optional=false,表示author不能为空。删除文章，不影响用户
-    @JoinColumn(name = "chat_id")
     @Expose
-    private Chat chat;
+    @Column(name = "chat_id")
+    private Integer chatId;
 
-    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH})//可选属性optional=false,表示author不能为空。删除文章，不影响用户
-    @JoinColumn(name = "user_to_id")//设置在article表中的关联字段(外键)
     @Expose
-    private User userTo;
+    @Column(name = "user_to_id")
+    private Integer userToId;
 
-    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH})//可选属性optional=false,表示author不能为空。删除文章，不影响用户
-    @JoinColumn(name = "user_from_id")//设置在article表中的关联字段(外键)
     @Expose
-    private User userFrom;
+    @Column(name = "user_from_id")
+    private Integer userFromId;
 
     public Integer getId() {
         return id;
@@ -63,30 +59,29 @@ public class Message implements AbstractEntity<Integer> {
         this.createTime = createTime;
     }
 
-    public Chat getChat() {
-        return chat;
+    public Integer getChatId() {
+        return chatId;
     }
 
-    public void setChat(Chat chat) {
-        this.chat = chat;
+    public void setChatId(Integer chatId) {
+        this.chatId = chatId;
     }
 
-    public User getUserTo() {
-        return userTo;
+    public Integer getUserToId() {
+        return userToId;
     }
 
-    public void setUserTo(User userTo) {
-        this.userTo = userTo;
+    public void setUserToId(Integer userToId) {
+        this.userToId = userToId;
     }
 
-    public User getUserFrom() {
-        return userFrom;
+    public Integer getUserFromId() {
+        return userFromId;
     }
 
-    public void setUserFrom(User userFrom) {
-        this.userFrom = userFrom;
+    public void setUserFromId(Integer userFromId) {
+        this.userFromId = userFromId;
     }
-
 
     @Override
     public String toString() {

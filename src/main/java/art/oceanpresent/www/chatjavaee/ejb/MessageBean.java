@@ -13,6 +13,8 @@ public class MessageBean {
     private static MessageJPA messageJPA = new MessageJPA();
 
     public List<Message> getMessageByChat(Integer chatId) {
-        return messageJPA.findByChat(chatId);
+        List<Message> list = messageJPA.findByChat(chatId);
+        list.sort((p1, p2) -> p1.getCreateTime().compareTo(p2.getCreateTime()));
+        return list;
     }
 }

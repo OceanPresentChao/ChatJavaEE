@@ -14,17 +14,17 @@ import static java.util.stream.Collectors.toList;
 public class MessageJPA extends AbstractJPA<Integer, Message> {
 
     public List<Message> findByToId(Integer toId) {
-        return stream().filter(p -> p.getUserTo().getId() == toId)
+        return stream().filter(p -> p.getUserToId() == toId)
                 .collect(toList());
     }
 
     public List<Message> findByFromId(Integer fromId) {
-        return stream().filter(p -> p.getUserTo().getId() == fromId)
+        return stream().filter(p -> p.getUserFromId() == fromId)
                 .collect(toList());
     }
 
     public List<Message> findByChat(Integer chatId) {
-        return stream().filter(p -> p.getChat().getId() == chatId)
+        return stream().filter(p -> p.getChatId() == chatId)
                 .collect(toList());
     }
 

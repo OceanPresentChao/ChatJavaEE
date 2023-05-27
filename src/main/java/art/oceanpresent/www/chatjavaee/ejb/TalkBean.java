@@ -45,9 +45,9 @@ public class TalkBean {
         Message msg = new Message();
 
         msg.setContent(message);
-        msg.setChat(chat);
-        msg.setUserFrom(from);
-        msg.setUserTo(to);
+        msg.setChatId(chat.getId());
+        msg.setUserFromId(from.getId());
+        msg.setUserToId(to.getId());
 
         Message m = messageJPA.create(msg);
         messageList.add(m);
@@ -65,9 +65,9 @@ public class TalkBean {
             throw new CustomException(obj.get("message").getAsString());
         }
         msg.setContent(obj.get("data").getAsJsonObject().get("content").toString());
-        msg.setChat(chat);
-        msg.setUserFrom(from);
-        msg.setUserTo(to);
+        msg.setChatId(chat.getId());
+        msg.setUserFromId(from.getId());
+        msg.setUserToId(to.getId());
 
         Message m = messageJPA.create(msg);
         messageList.add(m);
