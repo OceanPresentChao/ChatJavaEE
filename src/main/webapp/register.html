@@ -53,7 +53,7 @@
             outline: none;
         }
 
-        .input-item:placeholder {
+        .input-item::placeholder {
             text-transform: uppercase;
         }
 
@@ -84,6 +84,7 @@
         <div class="form-wrapper">
             <input type="text" name="username" placeholder="username" class="input-item">
             <input id="password" type="password" name="password" placeholder="password" class="input-item">
+            <input id="phone" type="text" name="phone" placeholder="phone" class="input-item">
             <div id="passAlert" style="display: none;color: #ef3838;">密码必须是8位以上的字母和数字组合</div>
             <div id="register" class="btn">Register</div>
         </div>
@@ -105,16 +106,22 @@
     $("#register").on("click", function () {
         let username = $("input[name='username']").val();
         let password = $("input[name='password']").val();
+        let phone = $("input[name='phone']").val();
         if (!psPattern.test(password)) {
             $("#passAlert").show();
+            return;
+        }
+        if (!username.trim() || !password.trim() || !phone.trim()) {
+            alert("用户名、密码、手机号不能为空");
             return;
         }
         $.ajax({
             url: "user",
             type: "post",
             data: {
-                username: username,
-                password: password
+                username,
+                password,
+                phone
             },
             success: function (data) {
                 data = JSON.parse(data)

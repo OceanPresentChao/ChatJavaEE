@@ -132,8 +132,16 @@
             </div>
 
             <div class="mb-3">
-                <label for="email">Email <span class="text-muted">(Optional)</span></label>
+                <label for="email">Email</label>
                 <input type="email" class="form-control" id="email" name="email" placeholder="you@example.com">
+                <div class="invalid-feedback">
+                    Please enter a valid email address for shipping updates.
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="phone">Phone</label>
+                <input class="form-control" id="phone" name="phone" placeholder="1234567890">
                 <div class="invalid-feedback">
                     Please enter a valid email address for shipping updates.
                 </div>
@@ -208,27 +216,33 @@
         window.location.href = "./index.html"
     }
     $("#username").val(user.username)
+    $("input[name='email']").val(user.email)
+    $("input[name='address']").val(user.address)
+    $("input[name='phone']").val(user.phone)
 
     $("#save-btn").on("click", function () {
         let newData = {
             id: user.id,
             email: $("input[name='email']").val(),
-            address: $("input[name='address']").val()
+            address: $("input[name='address']").val(),
+            phone: $("input[name='phone']").val(),
+            method: 'put'
         }
         if ($("#switch-pass").get(0).checked) {
             newData["password"] = $("input[name='password']").val()
         }
         $.ajax({
             url: "user",
-            type: "PUT",
+            type: "post",
             data: newData,
-            success: function (res) {
-                if (res.code === 200) {
-                    alert("Update success")
-                    sessionStorage.setItem("JAVAEE_USER", JSON.stringify(res.data.user))
+            success: function (data) {
+                data = JSON.parse(data)
+                if (data.code === 200) {
+                    alert(data.message)
+                    sessionStorage.setItem("JAVAEE_USER", JSON.stringify(data.data.user))
                     window.location.href = "./home.html"
                 } else {
-                    alert("Update failed")
+                    alert(data.message)
                 }
             }
         })

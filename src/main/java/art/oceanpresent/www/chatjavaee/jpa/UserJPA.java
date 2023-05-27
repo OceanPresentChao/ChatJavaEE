@@ -18,7 +18,7 @@ public class UserJPA extends AbstractJPA<Integer, User> {
     private EntityManager entityManager;
 
     public List<User> findByUsername(String keyword) {
-        return stream().filter(p -> p.getUsername().contains(keyword))
+        return stream().filter(p -> p.getUsername().equals(keyword))
                 .collect(toList());
     }
 

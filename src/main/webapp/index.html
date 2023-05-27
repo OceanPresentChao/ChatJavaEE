@@ -51,20 +51,13 @@
 
         button {
             margin-top: 50px;
-            width: 60%;
-            height: 30px;
             border-radius: 10px;
+            padding: .5rem 1rem;
+            cursor: pointer;
             border: 0;
             color: #fff;
             text-align: center;
-            line-height: 30px;
-            font-size: 15px;
             background-image: linear-gradient(to right, #30cfd0, #330867);
-        }
-
-        #sign_up {
-            margin-top: 45%;
-            margin-left: 60%;
         }
 
         a {
@@ -85,20 +78,21 @@
     <div>
         <a href="./register.html">Register</a>
         <button id="login_btn">Login</button>
+        <a href="./forget.html">Forget</a>
     </div>
     <br>
 </div>
 <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 <script>
     $("#login_btn").on("click", function () {
-        let username = $("input[name='username']").val();
-        let password = $("input[name='password']").val();
+        const username = $("input[name='username']").val();
+        const password = $("input[name='password']").val();
         $.ajax({
             url: "login",
             type: "post",
             data: {
-                username: username,
-                password: password
+                username,
+                password,
             },
             success: function (data) {
                 data = JSON.parse(data)

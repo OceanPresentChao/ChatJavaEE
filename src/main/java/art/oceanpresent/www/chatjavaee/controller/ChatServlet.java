@@ -47,7 +47,7 @@ public class ChatServlet extends HttpServlet {
         }
         Integer userid = Integer.parseInt(request.getParameter("user_id"));
         String title = request.getParameter("title");
-        ServletOutputStream out = response.getOutputStream();
+        PrintWriter out = response.getWriter();
         JsonObject res = new JsonObject();
         try {
             Chat el = new Chat();
@@ -66,7 +66,7 @@ public class ChatServlet extends HttpServlet {
         Integer id = Integer.parseInt(request.getParameter("id"));
         String title = request.getParameter("title");
         String status = request.getParameter("status");
-        ServletOutputStream out = response.getOutputStream();
+        PrintWriter out = response.getWriter();
         JsonObject res = new JsonObject();
         try {
             Chat data = ChatService.getChat(id);
@@ -89,7 +89,7 @@ public class ChatServlet extends HttpServlet {
     protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setCharacterEncoding("UTF-8");
         Integer id = Integer.parseInt(request.getParameter("id"));
-        ServletOutputStream out = response.getOutputStream();
+        PrintWriter out = response.getWriter();
         JsonObject res = new JsonObject();
         try {
             ChatService.deleteChat(id);

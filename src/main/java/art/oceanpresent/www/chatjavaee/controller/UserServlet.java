@@ -46,11 +46,15 @@ public class UserServlet extends HttpServlet {
         }
         String name = request.getParameter("username");
         String password = request.getParameter("password");
-
+        String phone = request.getParameter("phone");
+        
         PrintWriter out = response.getWriter();
         JsonObject res = new JsonObject();
         try {
-            User user = UserService.register(name, password);
+            if (name == null || password == null || phone == null) {
+                throw new CustomException("参数不全！");
+            }
+            User user = UserService.register(name, password, phone);
             res.add("user", CustomResponse.convert2Object(user));
             out.print(CustomResponse.success(res).toString());
         } catch (CustomException e) {

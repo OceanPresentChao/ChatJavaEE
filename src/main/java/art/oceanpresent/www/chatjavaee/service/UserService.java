@@ -22,7 +22,7 @@ public class UserService {
         return theone;
     }
 
-    public static User register(String name, String password) {
+    public static User register(String name, String password, String phone) {
         if (name == null || password == null) {
             throw new CustomException("Username or password cannot be empty");
         }
@@ -33,6 +33,7 @@ public class UserService {
         User user = new User();
         user.setUsername(name);
         user.setPassword(Tool.getMD5(password));
+        user.setPhone(phone);
         User res = userJPA.create(user);
         return res;
     }

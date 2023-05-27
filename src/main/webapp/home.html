@@ -299,6 +299,7 @@
 
     window.onload = function () {
         renderChatList()
+        resetFormStatus()
         $("#new-chat").on("click", function () {
             onNewChat()
         })
@@ -336,6 +337,7 @@
                 "method": 'delete'
             },
             success: function (data) {
+                data = JSON.parse(data)
                 alert(data.message)
                 location.reload()
             }
