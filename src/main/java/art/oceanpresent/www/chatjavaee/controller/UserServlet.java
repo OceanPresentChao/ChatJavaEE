@@ -45,7 +45,7 @@ public class UserServlet extends HttpServlet {
         }
         String name = request.getParameter("username");
         String password = request.getParameter("password");
-        
+
         ServletOutputStream out = response.getOutputStream();
         JsonObject res = new JsonObject();
         try {
@@ -62,12 +62,24 @@ public class UserServlet extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         Integer id = Integer.parseInt(request.getParameter("id"));
         String password = request.getParameter("password");
+        String email = request.getParameter("email");
+        String phone = request.getParameter("phone");
+        String address = request.getParameter("address");
         ServletOutputStream out = response.getOutputStream();
         JsonObject res = new JsonObject();
         try {
             User data = UserService.getUser(id);
             if (password != null) {
                 data.setPassword(Tool.getMD5(password));
+            }
+            if (email != null) {
+                data.setEmail(email);
+            }
+            if (phone != null) {
+                data.setPhone(phone);
+            }
+            if (address != null) {
+                data.setAddress(address);
             }
             User user = UserService.updateUser(id, data);
             res.add("user", CustomResponse.convert2Object(user));

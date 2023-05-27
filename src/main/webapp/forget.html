@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            background: url('https://cdn.pixabay.com/photo/2018/08/14/13/23/ocean-3605547_1280.jpg') no-repeat;
+            background-size: 100% 130%;
+        }
+
+        #login_box {
+            width: 20%;
+            height: 400px;
+            background-color: #00000060;
+            margin: auto;
+            margin-top: 10%;
+            text-align: center;
+            border-radius: 10px;
+            padding: 50px 50px;
+        }
+
+        h2 {
+            color: #ffffff90;
+            margin-top: 5%;
+        }
+
+        #input-box {
+            margin-top: 5%;
+        }
+
+        span {
+            color: #fff;
+        }
+
+        input {
+            border: 0;
+            width: 60%;
+            font-size: 15px;
+            color: #fff;
+            background: transparent;
+            border-bottom: 2px solid #fff;
+            padding: 5px 10px;
+            outline: none;
+            margin-top: 10px;
+        }
+
+        button {
+            margin-top: 50px;
+            width: 60%;
+            height: 30px;
+            border-radius: 10px;
+            border: 0;
+            color: #fff;
+            text-align: center;
+            line-height: 30px;
+            font-size: 15px;
+            background-image: linear-gradient(to right, #30cfd0, #330867);
+        }
+
+        #sign_up {
+            margin-top: 45%;
+            margin-left: 60%;
+        }
+
+        a {
+            color: #b94648;
+        }
+    </style>
+</head>
+
+<body>
+<div id="login_box">
+    <h2>Forget</h2>
+    <div id="input_box">
+        <input type="text" placeholder="请输入用户名" name="username">
+    </div>
+    <div>
+        <input type="text" placeholder="请输入手机号" name="phone">
+    </div>
+    <div class="input_box">
+        <input type="password" placeholder="请输入密码" name="password" id="password">
+    </div>
+    <div id="passAlert" style="display: none;color: #ef3838;">密码必须是8位以上的字母和数字组合</div>
+    <button id="save-btn">修改</button>
+    <br>
+</div>
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<script>
+    let psPattern = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,}$/;
+    $("#password").blur(function () {
+        let password = $(this).val();
+        if (!psPattern.test(password)) {
+            $("#passAlert").show();
+        }
+    });
+    $("button").click(function () {
+        let username = $("input[name='username']").val();
+        let phone = $("input[name='phone']").val();
+        let password = $("input[name='password']").val();
+        if (!psPattern.test(password)) {
+            alert("密码必须是8位以上的字母和数字组合");
+            return;
+        }
+        if (!username || !phone || !password) {
+            alert("请填写完整信息");
+            return;
+        }
+        $.ajax({
+            url: "password",
+            type: "post",
+            data: {
+                username,
+                password,
+                phone
+            },
+            success: function (data) {
+                data = JSON.parse(data)
+                if (data.code === 200) {
+                    alert("修改成功");
+                    window.location.href = "./index.html";
+                } else {
+                    alert(data.message);
+                }
+            }
+        })
+    })
+</script>
+</body>
+
+</html>
